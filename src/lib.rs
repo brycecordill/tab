@@ -10,6 +10,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 pub struct Config {
     pub name1: String,
     pub amount: f64,
+    pub action: String,
     pub name2: String,
     pub filename: String,
 }
@@ -31,6 +32,11 @@ impl Config {
             Err(_) => return Err("Failed to parse 'amount'"),
         };
 
+        let action = match args.next() {
+            Some(arg) => arg,
+            None => return Err("No action given")
+        };
+
         let name2 = match args.next() {
             Some(arg) => arg.to_lowercase(),
             None => return Err("Second name not given")
@@ -42,7 +48,7 @@ impl Config {
             None => return Err("Unable to find 'Documents' directory")
         };
 
-        Ok(Config {name1, amount, name2, filename})
+        Ok(Config {name1, amount, action, name2, filename})
     }
 }
 
