@@ -6,10 +6,11 @@ use std::path::Path;
 use std::fs::OpenOptions;
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    // Create the data file if it doesn't exist
     if !Path::new(&config.filename).exists() {
         File::create(&config.filename)?;
     }
-    let data = fs::read_to_string(&config.filename)?;
+    let mut data = fs::read_to_string(&config.filename)?;
 
     // 'Sort' the name combo so it is consistent
     let name_combo = if config.name1 < config.name2 {
@@ -18,10 +19,30 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
         format!("{}_{}", config.name1, config.name2)
     };
 
-    let i = match data.find(&name_combo) {
+    let start_index = match data.find(&name_combo) {
         Some(num) => num,
+        // If the combo is not found, add it to the file and end the program
         None => return append_new(&config, &name_combo),
     };
+
+    let mut end_index = start_index;
+    for (i, ch) in data[start_index..].char_indices() {
+        if ch == '\n' {
+            end_index = i;
+            break;
+        }
+    }
+
+    let current_owed = parse_tab_line(&data[start_index..end_index]);
+    let to_add = calculate_tab(&config);
+
+    let final_line = format!("{} {}", name_combo, current_owed + to_add);
+
+    data.replace_range(start_index..(end_index + 1), &final_line);
+
+    let mut out_file = fs::File::create(&config.filename)?;
+    out_file.write(&data.as_bytes())?;
+
 
     Ok(())
 }
@@ -33,6 +54,21 @@ fn append_new(config: &Config, name_combo: &str) -> Result<(), Box<dyn Error>> {
 
     file.write(&new_line.as_bytes())?;
     Ok(())
+}
+
+fn parse_tab_line(ln: &str) -> f64{
+    let mut start_char = 0;
+    
+    for (i, ch) in ln.char_indices() {
+        if ch == ' ' {
+            start_char = i;
+            break;
+        }
+    }
+
+    let current_tab: f64 = ln.get(start_char..).unwrap().trim().parse().unwrap();
+    current_tab
+    
 }
 
 // TODO Comment this or rewrite to make more clear
