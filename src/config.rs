@@ -6,13 +6,24 @@ pub struct Config {
     pub filename: String,
 }
 impl Config {
-    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
+    pub fn new(args: Vec<String>) -> Result<Config, &'static str> {
+        
+        let mut args = args.into_iter();
+
         args.next();  // Skip the exec name
 
         let name1 = match args.next() {
             Some(arg) => arg.to_lowercase(),
             None => return Err("First name not given")
         };
+
+        let action = match args.next() {
+            Some(arg) => arg,
+            None => return Err("No action given")
+        };
+        if !(action == "recv" || action == "owes") {
+            return Err("Invalid action")
+        }
 
         let amount = match args.next() {
             Some(arg) => arg,
@@ -22,14 +33,6 @@ impl Config {
             Ok(num) => num,
             Err(_) => return Err("Failed to parse 'amount'"),
         };
-
-        let action = match args.next() {
-            Some(arg) => arg,
-            None => return Err("No action given")
-        };
-        if action != "recv" || action != "owes" {
-            return Err("Invalid action")
-        }
 
         let name2 = match args.next() {
             Some(arg) => arg.to_lowercase(),

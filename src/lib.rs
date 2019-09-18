@@ -6,6 +6,8 @@ use std::path::Path;
 use std::fs::OpenOptions;
 
 pub mod config;
+#[cfg(test)]
+mod tests;
 
 type Config = config::Config;
 
@@ -96,12 +98,12 @@ fn parse_line(ln: &str) -> f64{
 fn calculate_tab(config: &Config) -> f64 {
     assert!(config.action == "recv" || config.action == "owes");
 
-    if config.action == "recv" {
+    if config.action == "owes" {
         if config.name1 < config.name2 {
             return config.amount
         }
         config.amount * -1.0
-    } else {  // If action == "owes"
+    } else {  // If action == "recv"
         if config.name1 < config.name2 {
             return config.amount * -1.0
         }
