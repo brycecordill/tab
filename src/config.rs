@@ -1,3 +1,5 @@
+extern crate dirs;
+
 pub struct Config {
     pub name1: String,
     pub amount: f64,

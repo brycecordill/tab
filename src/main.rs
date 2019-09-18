@@ -1,7 +1,6 @@
 use std::env;
 use std::process;
 
-extern crate dirs;
 use tab::config::Config;
 
 fn main() {
