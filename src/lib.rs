@@ -6,6 +6,7 @@ use std::path::Path;
 use std::fs::OpenOptions;
 
 pub mod config;
+
 #[cfg(test)]
 mod tests;
 
@@ -21,7 +22,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     // 'Sort' the name combo so it is consistent
     let name_combo = generate_name_combo(&config);
 
-    let (start_i, end_i) = match get_indecies(&data, &name_combo) {
+    let (start_i, end_i) = match get_indices(&data, &name_combo) {
         Some((s, e)) => (s, e),
         // If the combo is not found, add it to the file and end the program
         None => return append_new(&config, &name_combo),
@@ -29,14 +30,18 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
     let new_line = update_line(&config, &data[start_i..end_i], &name_combo);
 
+    // Replace the old line with the new line
     data.replace_range(start_i..(end_i + 1), &new_line);
 
+    // Overwrite the old data with the modified data
     let mut out_file = fs::File::create(&config.filename)?;
     out_file.write(&data.as_bytes())?;
 
     Ok(())
 }
 
+/// Returns an updated version of the line based on the current
+/// amount and the amount to add
 fn update_line(config: &Config, old_ln: &str, name_combo: &str) -> String {
     let current_owed = parse_line(&old_ln);
     let to_add = calculate_tab(&config);
@@ -44,10 +49,12 @@ fn update_line(config: &Config, old_ln: &str, name_combo: &str) -> String {
     format!("{} {}\n", &name_combo, current_owed + to_add)
 }
 
-fn get_indecies(data: &str, name_combo: &str) -> Option<(usize, usize)> {
+/// Returns the start and end indices of the line matching `name_combo`
+/// relative to the `data` str.
+/// Returns `None` if the `name_combo` is not found
+fn get_indices(data: &str, name_combo: &str) -> Option<(usize, usize)> {
     let start_index = match data.find(&name_combo) {
         Some(num) => num,
-        // If the combo is not found, add it to the file and end the program
         None => return None,
     };
 
@@ -62,6 +69,7 @@ fn get_indecies(data: &str, name_combo: &str) -> Option<(usize, usize)> {
     Some((start_index, end_index))
 }
 
+/// Generates and returns a `name_combo` String by sorting alphabetically
 fn generate_name_combo(config: &Config) -> String {
     if config.name1 < config.name2 {
         format!("{}_{}", config.name1, config.name2)
@@ -70,6 +78,7 @@ fn generate_name_combo(config: &Config) -> String {
     }
 }
 
+/// Appends a new line to the end of the file with correct formatting
 fn append_new(config: &Config, name_combo: &str) -> Result<(), Box<dyn Error>> {
     let mut file = OpenOptions::new().append(true).open(&config.filename)?;
 
@@ -79,9 +88,11 @@ fn append_new(config: &Config, name_combo: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Returns the amount owed based on the given line
 fn parse_line(ln: &str) -> f64{
     let mut start_char = 0;
     
+    // Iterate until the amount is found
     for (i, ch) in ln.char_indices() {
         if ch == ' ' {
             start_char = i;
@@ -89,24 +100,31 @@ fn parse_line(ln: &str) -> f64{
         }
     }
 
+    // Parse the amount
     let current_tab: f64 = ln.get(start_char..).unwrap().trim().parse().unwrap();
     current_tab
     
 }
 
-// TODO Comment this or rewrite to make more clear
+/// Determines whether to add or subtract the `config.amount` value based
+/// on the action supplied and the order of the names.
+/// Can oly be called with the actions `"recv"` or `"owes"` 
 fn calculate_tab(config: &Config) -> f64 {
     assert!(config.action == "recv" || config.action == "owes");
 
     if config.action == "owes" {
+        // If name1 owes name2 and name1 is first in name_combo
         if config.name1 < config.name2 {
             return config.amount
         }
+        // If name_combo is flipped from the action, return the opposite
         config.amount * -1.0
     } else {  // If action == "recv"
+        // If name1 recieved from name2 and name1 is first in name_combo
         if config.name1 < config.name2 {
             return config.amount * -1.0
         }
+        // If name_combo is flipped from the action, return the opposite
         config.amount
     }
 }
