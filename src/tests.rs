@@ -56,3 +56,18 @@ fn test_calc_tab_order4() {
     let tab = calculate_tab(&conf);
     assert_eq!(tab, 20.00);
 }
+
+#[test]
+fn test_name_combo() {
+    let args = vec![
+        String::from("tab"),
+        String::from("bob"),
+        String::from("recv"),
+        String::from("20"),
+        String::from("alice"),
+    ];
+    let conf = Config::new(args).unwrap();
+
+    let name_combo = generate_name_combo(&conf);
+    assert_eq!(name_combo, "alice_bob");
+}

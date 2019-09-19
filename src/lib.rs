@@ -105,7 +105,7 @@ fn generate_name_combo(config: &Config) -> String {
     if config.name1 < config.name2 {
         format!("{}_{}", config.name1, config.name2)
     } else {
-        format!("{}_{}", config.name1, config.name2)
+        format!("{}_{}", config.name2, config.name1)
     }
 }
 
