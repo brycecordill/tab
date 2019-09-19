@@ -4,6 +4,7 @@ use std::fs::File;
 use std::io::Write;
 use std::path::Path;
 use std::fs::OpenOptions;
+use std::process;
 
 pub mod config;
 
@@ -11,6 +12,36 @@ pub mod config;
 mod tests;
 
 type Config = config::Config;
+
+/// Prints out the data stored in the data file, then exits
+pub fn print_tab() {
+    // Set the data file (Hardcoded for now)
+    let filename = match dirs::document_dir() {
+        Some(dir) => format!("{}/tab.data", dir.display()),
+        None => {
+            eprintln!("Unable to find 'Documents' directory");
+            process::exit(1);
+        }
+    };
+
+    let file_data = fs::read_to_string(&filename).unwrap_or_else(|err| {
+        eprintln!("{}", err);
+        process::exit(1);
+    });
+
+    let file_data = file_data.replace("_", " owes ");
+
+    println!("{}", file_data);
+
+    process::exit(0);
+}
+
+/// Prints a usage message to stderr
+pub fn print_usage() {
+    eprintln!("\nUSAGE: tab name1 action name2 amount\n");
+    eprintln!("where action is either recv or owes \
+        and amount is the amount owed/recieved");
+}
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     // Create the data file if it doesn't exist
