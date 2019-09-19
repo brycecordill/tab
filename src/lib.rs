@@ -38,7 +38,7 @@ pub fn print_tab() {
 
 /// Prints a usage message to stderr
 pub fn print_usage() {
-    eprintln!("\nUSAGE: tab name1 action name2 amount\n");
+    eprintln!("\nUSAGE: tab name1 action amount name2\n");
     eprintln!("where action is either recv or owes \
         and amount is the amount owed/recieved");
 }
