@@ -24,8 +24,8 @@ pub fn print_tab() {
         }
     };
 
-    let file_data = fs::read_to_string(&filename).unwrap_or_else(|err| {
-        eprintln!("{}", err);
+    let file_data = fs::read_to_string(&filename).unwrap_or_else(|_| {
+        eprintln!("Unable to open the tab file.  Has it been created yet?");
         process::exit(1);
     });
 
