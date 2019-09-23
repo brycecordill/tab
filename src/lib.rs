@@ -77,7 +77,7 @@ fn update_line(config: &Config, old_ln: &str, name_combo: &str) -> String {
     let current_owed = parse_line(&old_ln);
     let to_add = calculate_tab(&config);
 
-    format!("{} {}\n", &name_combo, current_owed + to_add)
+    format!("{} {:.2}\n", &name_combo, current_owed + to_add)
 }
 
 /// Returns the start and end indices of the line matching `name_combo`
