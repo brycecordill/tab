@@ -1,9 +1,7 @@
 use std::error::Error;
-use std::fs;
-use std::fs::File;
+use std::fs::{self, File, OpenOptions};
 use std::io::Write;
 use std::path::Path;
-use std::fs::OpenOptions;
 use std::process;
 
 pub mod config;
