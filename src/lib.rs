@@ -137,7 +137,7 @@ fn parse_line(ln: &str) -> f64{
 
 /// Determines whether to add or subtract the `config.amount` value based
 /// on the action supplied and the order of the names.
-/// Can oly be called with the actions `"recv"` or `"owes"` 
+/// Can only be called with the actions `"recv"` or `"owes"` 
 fn calculate_tab(config: &Config) -> f64 {
     assert!(config.action == "recv" || config.action == "owes");
 
