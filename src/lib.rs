@@ -27,9 +27,21 @@ pub fn print_tab() {
         process::exit(1);
     });
 
-    let file_data = file_data.replace("_", " owes ");
+    let file_data = file_data.replace("_", " ");
 
-    println!("{}", file_data);
+    let mut word_iter = file_data.split_ascii_whitespace();
+
+
+    let name1 = word_iter.next().unwrap();
+    let name2 = word_iter.next().unwrap();
+    let amount: f64 = word_iter.next().unwrap().parse().unwrap();
+
+    if amount >= 0.0 {
+        println!("{} owes {} ${}", name1, name2, amount);
+    }
+    else {
+        println!("{} owes {} ${}", name2, name1, -1.0 * amount);
+    }
 
     process::exit(0);
 }
