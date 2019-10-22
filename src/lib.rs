@@ -88,10 +88,14 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 /// Returns an updated version of the line based on the current
 /// amount and the amount to add
 fn update_line(config: &Config, old_ln: &str, name_combo: &str) -> String {
-    let current_owed = parse_line(&old_ln);
-    let to_add = calculate_tab(&config);
+    let new_amount = parse_line(&old_ln) + calculate_tab(&config);
 
-    format!("{} {:.2}\n", &name_combo, current_owed + to_add)
+    // Delete the line if the amount owed is 0
+    if new_amount == 0.0 {
+        return format!("")
+    }
+
+    format!("{} {:.2}\n", &name_combo, new_amount)
 }
 
 /// Returns the start and end indices of the line matching `name_combo`
