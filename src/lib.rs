@@ -102,7 +102,7 @@ fn get_indices(data: &str, name_combo: &str) -> Option<(usize, usize)> {
     let mut end_index = start_index;
     for (i, ch) in data[start_index..].char_indices() {
         if ch == '\n' {
-            end_index = i;
+            end_index = i + start_index;
             break;
         }
     }
