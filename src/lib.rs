@@ -129,9 +129,16 @@ fn generate_name_combo(config: &Config) -> String {
 
 /// Appends a new line to the end of the file with correct formatting
 fn append_new(config: &Config, name_combo: &str) -> Result<(), Box<dyn Error>> {
+    let amount = calculate_tab(&config);
+
+    // Do nothing if 0 is given as amount owed/paid
+    if amount == 0.0 {
+        return Ok(())
+    }
+
     let mut file = OpenOptions::new().append(true).open(&config.filename)?;
 
-    let new_line = format!("{} {}\n", name_combo, calculate_tab(&config));
+    let new_line = format!("{} {}\n", name_combo, amount);
 
     file.write(&new_line.as_bytes())?;
     Ok(())
