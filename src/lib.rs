@@ -49,8 +49,8 @@ pub fn print_tab() {
 /// Prints a usage message to stderr
 pub fn print_usage() {
     eprintln!("\nUSAGE: tab name1 action amount name2\n");
-    eprintln!("where action is either recv or owes \
-        and amount is the amount owed/recieved");
+    eprintln!("where action is either paid or owes \
+        and amount is the amount owed/paid");
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
@@ -149,9 +149,9 @@ fn parse_line(ln: &str) -> f64{
 
 /// Determines whether to add or subtract the `config.amount` value based
 /// on the action supplied and the order of the names.
-/// Can only be called with the actions `"recv"` or `"owes"` 
+/// Can only be called with the actions `"paid"` or `"owes"` 
 fn calculate_tab(config: &Config) -> f64 {
-    assert!(config.action == "recv" || config.action == "owes");
+    assert!(config.action == "paid" || config.action == "owes");
 
     if config.action == "owes" {
         // If name1 owes name2 and name1 is first in name_combo
@@ -160,7 +160,7 @@ fn calculate_tab(config: &Config) -> f64 {
         }
         // If name_combo is flipped from the action, return the opposite
         config.amount * -1.0
-    } else {  // If action == "recv"
+    } else {  // If action == "paid"
         // If name1 recieved from name2 and name1 is first in name_combo
         if config.name1 < config.name2 {
             return config.amount * -1.0

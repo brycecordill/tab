@@ -23,7 +23,7 @@ impl Config {
             Some(arg) => arg,
             None => return Err("No action given")
         };
-        if !(action == "recv" || action == "owes") {
+        if !(action == "paid" || action == "owes") {
             return Err("Invalid action")
         }
 
