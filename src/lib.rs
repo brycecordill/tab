@@ -29,19 +29,23 @@ pub fn print_tab() {
 
     let file_data = file_data.replace("_", " ");
 
-    let mut word_iter = file_data.split_ascii_whitespace();
+    for line in file_data.lines() {
+        let mut word_iter = line.split_ascii_whitespace();
 
+        let name1 = word_iter.next().unwrap();
+        let name2 = word_iter.next().unwrap();
+        let amount: f64 = word_iter.next().unwrap().parse().unwrap();
 
-    let name1 = word_iter.next().unwrap();
-    let name2 = word_iter.next().unwrap();
-    let amount: f64 = word_iter.next().unwrap().parse().unwrap();
+        if amount >= 0.0 {
+            println!("{} owes {} ${}", name1, name2, amount);
+        }
+        else {
+            println!("{} owes {} ${}", name2, name1, -1.0 * amount);
+        }
 
-    if amount >= 0.0 {
-        println!("{} owes {} ${}", name1, name2, amount);
     }
-    else {
-        println!("{} owes {} ${}", name2, name1, -1.0 * amount);
-    }
+
+    
 
     process::exit(0);
 }
