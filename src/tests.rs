@@ -6,8 +6,8 @@ fn test_calc_tab_order1() {
         String::from("tab"),
         String::from("alice"),
         String::from("owes"),
-        String::from("20"),
         String::from("bob"),
+        String::from("20")
     ];
     let conf = Config::new(args).unwrap();
 
@@ -20,8 +20,8 @@ fn test_calc_tab_order2() {
         String::from("tab"),
         String::from("bob"),
         String::from("owes"),
-        String::from("20"),
         String::from("alice"),
+        String::from("20")
     ];
     let conf = Config::new(args).unwrap();
 
@@ -34,8 +34,8 @@ fn test_calc_tab_order3() {
         String::from("tab"),
         String::from("alice"),
         String::from("paid"),
-        String::from("20"),
         String::from("bob"),
+        String::from("20")
     ];
     let conf = Config::new(args).unwrap();
 
@@ -48,8 +48,8 @@ fn test_calc_tab_order4() {
         String::from("tab"),
         String::from("bob"),
         String::from("paid"),
-        String::from("20"),
         String::from("alice"),
+        String::from("20")
     ];
     let conf = Config::new(args).unwrap();
 
@@ -63,8 +63,8 @@ fn test_name_combo() {
         String::from("tab"),
         String::from("bob"),
         String::from("paid"),
-        String::from("20"),
         String::from("alice"),
+        String::from("20")
     ];
     let conf = Config::new(args).unwrap();
 

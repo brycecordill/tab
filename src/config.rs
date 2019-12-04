@@ -27,6 +27,11 @@ impl Config {
             return Err("Invalid action")
         }
 
+        let name2 = match args.next() {
+            Some(arg) => arg.to_lowercase(),
+            None => return Err("Second name not given")
+        };
+
         let amount = match args.next() {
             Some(arg) => arg,
             None => return Err("No amount given")
@@ -34,11 +39,6 @@ impl Config {
         let amount: f64 = match amount.parse() {
             Ok(num) => num,
             Err(_) => return Err("Failed to parse 'amount'"),
-        };
-
-        let name2 = match args.next() {
-            Some(arg) => arg.to_lowercase(),
-            None => return Err("Second name not given")
         };
 
         // Set the data file (Hardcoded for now)
