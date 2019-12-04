@@ -45,8 +45,6 @@ pub fn print_tab() {
 
     }
 
-    
-
     process::exit(0);
 }
 
@@ -159,7 +157,6 @@ fn parse_line(ln: &str) -> f64{
     // Parse the amount
     let current_tab: f64 = ln.get(start_char..).unwrap().trim().parse().unwrap();
     current_tab
-    
 }
 
 /// Determines whether to add or subtract the `config.amount` value based
