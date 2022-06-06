@@ -2,9 +2,9 @@
 name = "tab"
 version = "0.1.0"
 authors = ["Bryce Cordill <brycecordill@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dirs = "2.0"
+dirs = "4.0.0"
